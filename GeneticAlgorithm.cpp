@@ -6,12 +6,18 @@
 #include <random>
 #include <ctime>
 
+
+
 int totalDistance(int adjacencyMatrix[4][4], int path[], int n);
 int** generateRandomPaths(int totalDestinations, int numberOfPaths);
 int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int numberOfPaths, int numberOfCities);
+int* createOffspring(int* parentA, int* parentB, int parentLength);
+int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
+int** applyMutations(int** generation, int generationLength, int chromosomeLength);
 
 int main()
 {
+
     std::srand(std::time(nullptr));
 
     //DODAJ 0 JAKO PIERWSZA POZYCJE W TABLICY !!!!!!!!!!!!!!!!!!!!!!!
@@ -28,44 +34,117 @@ int main()
     int n = 4;
 
     int total = totalDistance(adjacencyMatrix, path, n);
-
     int** paths = generateRandomPaths(4, 7);
+    int globalBest = 1000000;
 
-    std::cout << total;
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        for (int j = 0; j < 4; j++)
+        int best = totalDistance(adjacencyMatrix, paths[0], 4);
+
+        for (int j = 1; j < 7; j++)
         {
-            std::cout << paths[i][j] << " ";
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], 4)
+            );
         }
-        std::cout << "\n";
-    }
 
-    int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, 4);
-
-    for (int i = 0; i < 3; i++)
-    {
-        for (int j = 0; j < 4; j++)
+        if (best < globalBest)
         {
-            std::cout << survivors[i][j] << " ";
+            globalBest = best;
         }
-        std::cout << "\n";
-    }
 
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        std::cout << total;
+        //for (int i = 0; i < 7; i++)
+        //{
+        //    for (int j = 0; j < 4; j++)
+        //    {
+        //        std::cout << paths[i][j] << " ";
+        //    }
+        //    std::cout << "\n";
+        //}
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, 4);
+
+        //for (int i = 0; i < 3; i++)
+        //{
+        //    for (int j = 0; j < 4; j++)
+        //    {
+        //        std::cout << survivors[i][j] << " ";
+        //    }
+        //    std::cout << "\n";
+        //}
+
+        int** newGeneration = createNewGeneration(survivors, 3, 7, 4);
+
+        int** mutatedPaths = applyMutations(newGeneration, 7, 4);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+        
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+    
     for (int i = 0; i < 7; i++)
     {
         delete[] paths[i];
     }
     delete[] paths;
 
-    for (int i = 0; i < 3; i++)
-    {
-        delete[] survivors[i];
-    }
-    delete[] survivors;
+    std::cout << "Najlepszy znaleziony koszt = "
+        << globalBest
+        << "\n";
 
     return 0;
 }
+
+
+int** loadAdjacencyMatrix()
+{
+    int cityCount = 0;
+
+    for (XMLElement* vertex = graph->FirstChildElement("vertex");
+        vertex != nullptr;
+        vertex = vertex->NextSiblingElement("vertex"))
+    {
+        cityCount++;
+    }
+
+    double** adjacencyMatrix = new double* [cityCount];
+
+    for (int i = 0; i < cityCount; i++)
+    {
+        adjacencyMatrix[i] = new double[cityCount];
+    }
+}
+
+
 
 int totalDistance(int adjacencyMatrix [4][4], int path[], int n) {
     
@@ -100,8 +179,8 @@ int** generateRandomPaths(int totalDestinations, int numberOfPaths) {
     }
 
     
-
-    std::mt19937 generator(time(0));
+    std::random_device rd;
+    std::mt19937 generator(rd());
 
     initialPath[0] = 0;
 
@@ -135,7 +214,8 @@ int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int number
 
 
 
-    std::mt19937 generator(time(0));
+    std::random_device rd;
+    std::mt19937 generator(rd());
 
     std::shuffle(oldGeneration, oldGeneration + numberOfPaths, generator);
 
@@ -169,7 +249,7 @@ int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int number
 int* createOffspring(int* parentA, int* parentB, int parentLength)
 {
     
-    int start = std::rand() % parentLength;
+    int start = 1 + std::rand() % (parentLength - 1);
     int finish = start + std::rand() % (parentLength - start);
 
     int fragmentSize = finish - start + 1;
@@ -225,11 +305,32 @@ int* createOffspring(int* parentA, int* parentB, int parentLength)
     return offspring;
 }
 
+int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
+{
+    int** newGeneration = new int* [newGenerationSize];
+
+    for (int i = 0; i < newGenerationSize; i++)
+    {
+        int parentA = std::rand() % survivorsAmount;
+        int parentB;
+
+        do
+        {
+            parentB = std::rand() % survivorsAmount;
+        } while (parentA == parentB);
+        
+        newGeneration[i] = createOffspring(survivors[parentA], survivors[parentB], chromosomeLength);
+
+    }
+
+    return newGeneration;
+}
+
 //PRZETESTUJ
 int** applyMutations(int** generation, int generationLength, int chromosomeLength) 
 {
     int** mutatedGeneration = new int* [generationLength];
-    int index1, index2;
+    
 
     for (int i = 0; i < generationLength; i++)
     {
