@@ -12,6 +12,8 @@ int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int number
 
 int main()
 {
+    std::srand(std::time(nullptr));
+
     //DODAJ 0 JAKO PIERWSZA POZYCJE W TABLICY !!!!!!!!!!!!!!!!!!!!!!!
     //minimalny koszt = 35 dla tej macierzy
     int adjacencyMatrix[4][4] =
@@ -120,7 +122,6 @@ int** generateRandomPaths(int totalDestinations, int numberOfPaths) {
     return paths;
 }
 
-//przetestuj!!!!
 int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int numberOfPaths, int numberOfCities) {
 
     if (numberOfPaths % 2 != 0)
@@ -162,6 +163,96 @@ int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int number
 
 
     return survivors;
+}
+
+//PRZETESTUJ
+int* createOffspring(int* parentA, int* parentB, int parentLength)
+{
+    
+    int start = std::rand() % parentLength;
+    int finish = start + std::rand() % (parentLength - start);
+
+    int fragmentSize = finish - start + 1;
+    int* subPathFromA = new int[fragmentSize];
+
+    for (int i = 0; i < fragmentSize; i++)
+    {
+        subPathFromA[i] = parentA[start + i];
+    }
+
+    int* remainingPathFromB = new int[parentLength - fragmentSize];
+    int remainingSize = 0;
+
+    for (int i = 0; i < parentLength; i++)
+    {
+        bool found = false;
+
+        for (int j = 0; j < fragmentSize; j++)
+        {
+            if (parentB[i] == subPathFromA[j])
+            {
+                found = true;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            remainingPathFromB[remainingSize++] = parentB[i];
+        }
+    }
+
+    int* offspring = new int[parentLength];
+
+    int subIndex = 0;
+    int remainingIndex = 0;
+
+    for (int i = 0; i < parentLength; i++)
+    {
+        if (i >= start && i <= finish)
+        {
+            offspring[i] = subPathFromA[subIndex++];
+        }
+        else
+        {
+            offspring[i] = remainingPathFromB[remainingIndex++];
+        }
+    }
+
+    delete[] subPathFromA;
+    delete[] remainingPathFromB;
+
+    return offspring;
+}
+
+//PRZETESTUJ
+int** applyMutations(int** generation, int generationLength, int chromosomeLength) 
+{
+    int** mutatedGeneration = new int* [generationLength];
+    int index1, index2;
+
+    for (int i = 0; i < generationLength; i++)
+    {
+        mutatedGeneration[i] = new int[chromosomeLength];
+
+        for (int j = 0; j < chromosomeLength; j++)
+        {
+            mutatedGeneration[i][j] = generation[i][j];
+        }
+
+        if (std::rand() % 100 < 10)
+        {
+            int index1 = 1 + std::rand() % (chromosomeLength - 1);
+            int index2 = 1 + std::rand() % (chromosomeLength - 1);
+
+            std::swap(
+                mutatedGeneration[i][index1],
+                mutatedGeneration[i][index2]
+            );
+        }
+    }
+
+    return mutatedGeneration;
 }
 
 
