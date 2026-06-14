@@ -5,47 +5,57 @@
 #include <algorithm>
 #include <random>
 #include <ctime>
+#include <fstream>
+#include <string>
+#include <vector>
 
 
-
-int totalDistance(int adjacencyMatrix[4][4], int path[], int n);
+int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n);
 int** generateRandomPaths(int totalDestinations, int numberOfPaths);
-int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int numberOfPaths, int numberOfCities);
-int* createOffspring(int* parentA, int* parentB, int parentLength);
+int** chooseSurvivors(const std::vector<std::vector<int>>& adjacencyMatrix, int** oldGeneration, int numberOfPaths, int numberOfCities);
+int* orderCrossover(int* parentA, int* parentB, int parentLength);
 int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
-int** applyMutations(int** generation, int generationLength, int chromosomeLength);
+int** swapMutation(int** generation, int generationLength, int chromosomeLength);
+std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename);
+void inversionMutation(int* chromosome, int length);
+void scrambleMutation(int* chromosome, int length);
+int* PMX(int* parentA, int* parentB, int length);
+int* CX(int* parentA, int* parentB, int length);
 
 int main()
 {
+    auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
 
     std::srand(std::time(nullptr));
 
     //DODAJ 0 JAKO PIERWSZA POZYCJE W TABLICY !!!!!!!!!!!!!!!!!!!!!!!
     //minimalny koszt = 35 dla tej macierzy
-    int adjacencyMatrix[4][4] =
-    {   
-        {0, 10, 15, 20},
-        {9, 0, 5, 10},
-        {6, 13, 0, 12 },
-        {8, 8, 9, 0}
-     };
+    //int adjacencyMatrix2[4][4] =
+    //{   
+    //    {0, 10, 15, 20},
+    //    {9, 0, 5, 10},
+    //    {6, 13, 0, 12 },
+    //    {8, 8, 9, 0}
+    // };
 
-    int path[] = { 0, 1, 2, 3 };
-    int n = 4;
-
-    int total = totalDistance(adjacencyMatrix, path, n);
-    int** paths = generateRandomPaths(4, 7);
-    int globalBest = 1000000;
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
 
     for (int i = 0; i < 1000; i++)
     {
-        int best = totalDistance(adjacencyMatrix, paths[0], 4);
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
 
         for (int j = 1; j < 7; j++)
         {
             best = std::min(
                 best,
-                totalDistance(adjacencyMatrix, paths[j], 4)
+                totalDistance(adjacencyMatrix, paths[j], cities)
             );
         }
 
@@ -60,7 +70,6 @@ int main()
             << best
             << "\n";
 
-        std::cout << total;
         //for (int i = 0; i < 7; i++)
         //{
         //    for (int j = 0; j < 4; j++)
@@ -70,7 +79,7 @@ int main()
         //    std::cout << "\n";
         //}
 
-        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, 4);
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
         //for (int i = 0; i < 3; i++)
         //{
@@ -81,9 +90,9 @@ int main()
         //    std::cout << "\n";
         //}
 
-        int** newGeneration = createNewGeneration(survivors, 3, 7, 4);
+        int** newGeneration = createNewGeneration(survivors, 3, 7, cities);
 
-        int** mutatedPaths = applyMutations(newGeneration, 7, 4);
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
 
         for (int i = 0; i < 7; i++)
         {
@@ -117,7 +126,7 @@ int main()
     }
     delete[] paths;
 
-    std::cout << "Najlepszy znaleziony koszt = "
+    std::cout << "Best cost = "
         << globalBest
         << "\n";
 
@@ -125,28 +134,48 @@ int main()
 }
 
 
-int** loadAdjacencyMatrix()
+std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename)
 {
-    int cityCount = 0;
-
-    for (XMLElement* vertex = graph->FirstChildElement("vertex");
-        vertex != nullptr;
-        vertex = vertex->NextSiblingElement("vertex"))
+    std::ifstream file(filename);
+    if (!file.is_open())
     {
-        cityCount++;
+        std::cout << "File can't be open!\n";
+        return {};
     }
 
-    double** adjacencyMatrix = new double* [cityCount];
+    std::vector<std::vector<int>> adjacencyMatrix;
+    std::vector<int> row;
 
-    for (int i = 0; i < cityCount; i++)
+    std::string line;
+
+    while (std::getline(file, line))
     {
-        adjacencyMatrix[i] = new double[cityCount];
+        size_t pos = line.find("cost=\"");
+
+        if (pos != std::string::npos)
+        {
+            pos += 6;
+
+            size_t end = line.find("\"", pos);
+
+            double cost = std::stod(line.substr(pos, end - pos));
+
+            row.push_back((int)cost);
+        }
+
+        if (line.find("</vertex>") != std::string::npos)
+        {
+            adjacencyMatrix.push_back(row);
+            row.clear();
+        }
     }
+
+    return adjacencyMatrix;
 }
 
 
 
-int totalDistance(int adjacencyMatrix [4][4], int path[], int n) {
+int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n) {
     
     int sum = 0;
 
@@ -171,6 +200,7 @@ int** generateRandomPaths(int totalDestinations, int numberOfPaths) {
     
     int* initialPath = new int[totalDestinations];
     int** paths = new int*[numberOfPaths];
+   
 
     //czy tu nie powinno być po = i+1? ogarnij te graniczne warunki
     for (int i = 1; i < totalDestinations; i++)
@@ -201,7 +231,7 @@ int** generateRandomPaths(int totalDestinations, int numberOfPaths) {
     return paths;
 }
 
-int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int numberOfPaths, int numberOfCities) {
+int** chooseSurvivors(const std::vector<std::vector<int>>& adjacencyMatrix, int** oldGeneration, int numberOfPaths, int numberOfCities) {
 
     if (numberOfPaths % 2 != 0)
     {
@@ -246,7 +276,7 @@ int** chooseSurvivors(int adjacencyMatrix[4][4], int** oldGeneration, int number
 }
 
 //PRZETESTUJ
-int* createOffspring(int* parentA, int* parentB, int parentLength)
+int* orderCrossover(int* parentA, int* parentB, int parentLength)
 {
     
     int start = 1 + std::rand() % (parentLength - 1);
@@ -305,6 +335,128 @@ int* createOffspring(int* parentA, int* parentB, int parentLength)
     return offspring;
 }
 
+int* CX(int* parentA,
+    int* parentB,
+    int length)
+{
+    int* child = new int[length];
+
+    bool* visited = new bool[length];
+
+    for (int i = 0; i < length; i++)
+    {
+        visited[i] = false;
+    }
+
+    child[0] = 0;
+
+    int index = 1;
+
+    while (!visited[index])
+    {
+        visited[index] = true;
+
+        child[index] = parentA[index];
+
+        int value = parentB[index];
+
+        for (int i = 1; i < length; i++)
+        {
+            if (parentA[i] == value)
+            {
+                index = i;
+                break;
+            }
+        }
+    }
+
+    for (int i = 1; i < length; i++)
+    {
+        if (!visited[i])
+        {
+            child[i] = parentB[i];
+        }
+    }
+
+    delete[] visited;
+
+    return child;
+}
+
+int* PMX(int* parentA,
+    int* parentB,
+    int length)
+{
+    int* child = new int[length];
+
+    for (int i = 0; i < length; i++)
+    {
+        child[i] = -1;
+    }
+
+    child[0] = 0;
+
+    int start = 1 + std::rand() % (length - 1);
+    int end = 1 + std::rand() % (length - 1);
+
+    if (start > end)
+    {
+        std::swap(start, end);
+    }
+
+    for (int i = start; i <= end; i++)
+    {
+        child[i] = parentA[i];
+    }
+
+    for (int i = start; i <= end; i++)
+    {
+        int gene = parentB[i];
+
+        bool exists = false;
+
+        for (int j = 0; j < length; j++)
+        {
+            if (child[j] == gene)
+            {
+                exists = true;
+                break;
+            }
+        }
+
+        if (!exists)
+        {
+            int position = i;
+
+            while (child[position] != -1)
+            {
+                int mapped = parentA[position];
+
+                for (int k = 0; k < length; k++)
+                {
+                    if (parentB[k] == mapped)
+                    {
+                        position = k;
+                        break;
+                    }
+                }
+            }
+
+            child[position] = gene;
+        }
+    }
+
+    for (int i = 1; i < length; i++)
+    {
+        if (child[i] == -1)
+        {
+            child[i] = parentB[i];
+        }
+    }
+
+    return child;
+}
+
 int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
 {
     int** newGeneration = new int* [newGenerationSize];
@@ -319,7 +471,7 @@ int** createNewGeneration(int** survivors, int survivorsAmount, int newGeneratio
             parentB = std::rand() % survivorsAmount;
         } while (parentA == parentB);
         
-        newGeneration[i] = createOffspring(survivors[parentA], survivors[parentB], chromosomeLength);
+        newGeneration[i] = orderCrossover(survivors[parentA], survivors[parentB], chromosomeLength);
 
     }
 
@@ -327,7 +479,7 @@ int** createNewGeneration(int** survivors, int survivorsAmount, int newGeneratio
 }
 
 //PRZETESTUJ
-int** applyMutations(int** generation, int generationLength, int chromosomeLength) 
+int** swapMutation(int** generation, int generationLength, int chromosomeLength) 
 {
     int** mutatedGeneration = new int* [generationLength];
     
@@ -356,6 +508,48 @@ int** applyMutations(int** generation, int generationLength, int chromosomeLengt
     return mutatedGeneration;
 }
 
+
+void scrambleMutation(int* chromosome, int length)
+{
+    int start = 1 + std::rand() % (length - 1);
+    int end = 1 + std::rand() % (length - 1);
+
+    if (start > end)
+    {
+        std::swap(start, end);
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    std::shuffle(
+        chromosome + start,
+        chromosome + end + 1,
+        gen
+    );
+}
+
+void inversionMutation(int* chromosome, int length)
+{
+    int start = 1 + std::rand() % (length - 1);
+    int end = 1 + std::rand() % (length - 1);
+
+    if (start > end)
+    {
+        std::swap(start, end);
+    }
+
+    while (start < end)
+    {
+        std::swap(
+            chromosome[start],
+            chromosome[end]
+        );
+
+        start++;
+        end--;
+    }
+}
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
