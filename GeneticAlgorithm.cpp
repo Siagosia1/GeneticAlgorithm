@@ -8,23 +8,41 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <chrono>
+#include <stdio.h>
 
 int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n);
 int** generateRandomPaths(int totalDestinations, int numberOfPaths);
 int** chooseSurvivors(const std::vector<std::vector<int>>& adjacencyMatrix, int** oldGeneration, int numberOfPaths, int numberOfCities);
 int* orderCrossover(int* parentA, int* parentB, int parentLength);
-int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
+int** createNewGenerationOrderCrossover(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
 int** swapMutation(int** generation, int generationLength, int chromosomeLength);
 std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename);
 void inversionMutation(int* chromosome, int length);
 void scrambleMutation(int* chromosome, int length);
 int* PMX(int* parentA, int* parentB, int length);
 int* CX(int* parentA, int* parentB, int length);
+void geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix);
+
 
 int main()
 {
+    auto begin = std::chrono::high_resolution_clock::now();
+
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
+
+    geneticsAlgorithm(adjacencyMatrix);
+   
+    auto end = std::chrono::high_resolution_clock::now();
+    auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+
+    return 0;
+}
+
+void geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
+{
 
     int cities = adjacencyMatrix.size();
 
@@ -33,16 +51,6 @@ int main()
         << "\n";
 
     std::srand(std::time(nullptr));
-
-    //DODAJ 0 JAKO PIERWSZA POZYCJE W TABLICY !!!!!!!!!!!!!!!!!!!!!!!
-    //minimalny koszt = 35 dla tej macierzy
-    //int adjacencyMatrix2[4][4] =
-    //{   
-    //    {0, 10, 15, 20},
-    //    {9, 0, 5, 10},
-    //    {6, 13, 0, 12 },
-    //    {8, 8, 9, 0}
-    // };
 
     int** paths = generateRandomPaths(cities, 7);
     int globalBest = std::numeric_limits<int>::max();
@@ -70,27 +78,13 @@ int main()
             << best
             << "\n";
 
-        //for (int i = 0; i < 7; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        std::cout << paths[i][j] << " ";
-        //    }
-        //    std::cout << "\n";
-        //}
+
 
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
-        //for (int i = 0; i < 3; i++)
-        //{
-        //    for (int j = 0; j < 4; j++)
-        //    {
-        //        std::cout << survivors[i][j] << " ";
-        //    }
-        //    std::cout << "\n";
-        //}
 
-        int** newGeneration = createNewGeneration(survivors, 3, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
 
         int** mutatedPaths = swapMutation(newGeneration, 7, cities);
 
@@ -102,7 +96,7 @@ int main()
 
 
         paths = mutatedPaths;
-        
+
 
         for (int i = 0; i < 3; i++)
         {
@@ -119,7 +113,7 @@ int main()
         }
         delete[] newGeneration;
     }
-    
+
     for (int i = 0; i < 7; i++)
     {
         delete[] paths[i];
@@ -130,7 +124,27 @@ int main()
         << globalBest
         << "\n";
 
-    return 0;
+}
+
+void saveDataToFile(std::vector<std::vector<std::string>> data)
+{
+    std::ofstream file("data.csv");
+
+    if (!file.is_open()) {
+        std::cerr << "Failed to open file!" << std::endl;
+    }
+
+    for (const auto& row : data) {
+        for (size_t i = 0; i < row.size(); ++i) {
+            file << row[i];
+            if (i != row.size() - 1) file << ",";
+        }
+        file << "\n";
+    }
+
+    file.close();
+    std::cout << "CSV file created successfully." << std::endl;
+
 }
 
 
@@ -457,7 +471,7 @@ int* PMX(int* parentA,
     return child;
 }
 
-int** createNewGeneration(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
+int** createNewGenerationOrderCrossover(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
 {
     int** newGeneration = new int* [newGenerationSize];
 
