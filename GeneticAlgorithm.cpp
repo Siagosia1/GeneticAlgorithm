@@ -22,7 +22,7 @@ void inversionMutation(int* chromosome, int length);
 void scrambleMutation(int* chromosome, int length);
 int* PMX(int* parentA, int* parentB, int length);
 int* CX(int* parentA, int* parentB, int length);
-void geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix);
 
 
 int main()
@@ -31,7 +31,8 @@ int main()
 
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
 
-    geneticsAlgorithm(adjacencyMatrix);
+    std::cout << geneticsAlgorithm(adjacencyMatrix);
+    
    
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
@@ -41,7 +42,7 @@ int main()
     return 0;
 }
 
-void geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
+int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
 {
 
     int cities = adjacencyMatrix.size();
@@ -123,6 +124,8 @@ void geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
     std::cout << "Best cost = "
         << globalBest
         << "\n";
+
+    return globalBest, cities;
 
 }
 
