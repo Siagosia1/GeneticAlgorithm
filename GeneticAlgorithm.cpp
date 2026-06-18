@@ -22,7 +22,22 @@ void inversionMutation(int* chromosome, int length);
 void scrambleMutation(int* chromosome, int length);
 int* PMX(int* parentA, int* parentB, int length);
 int* CX(int* parentA, int* parentB, int length);
-int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix);
+
+int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithmPMXSWAP(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithmCXSWAP(std::vector<std::vector<int>> adjacencyMatrix);
+
+int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithmOCINV(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithmOCSCR(std::vector<std::vector<int>> adjacencyMatrix);
+
+int geneticsAlgorithmPMXINV(std::vector<std::vector<int>> adjacencyMatrix);
+int geneticsAlgorithmCXSCR(std::vector<std::vector<int>> adjacencyMatrix);
+
+
+int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
+int** createNewGenerationCX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
+
 
 
 int main()
@@ -31,8 +46,7 @@ int main()
 
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
 
-    std::cout << geneticsAlgorithm(adjacencyMatrix);
-    
+    std::cout << geneticsAlgorithmOCSWAP(adjacencyMatrix);
    
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
@@ -42,7 +56,9 @@ int main()
     return 0;
 }
 
-int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
+
+
+int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix)
 {
 
     int cities = adjacencyMatrix.size();
@@ -79,11 +95,7 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
             << best
             << "\n";
 
-
-
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
-
-
 
         int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
 
@@ -106,8 +118,6 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
         delete[] survivors;
 
 
-
-
         for (int i = 0;i < 7;i++)
         {
             delete[] newGeneration[i];
@@ -128,6 +138,8 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix)
     return globalBest, cities;
 
 }
+
+
 
 void saveDataToFile(std::vector<std::vector<std::string>> data)
 {
@@ -489,6 +501,48 @@ int** createNewGenerationOrderCrossover(int** survivors, int survivorsAmount, in
         } while (parentA == parentB);
         
         newGeneration[i] = orderCrossover(survivors[parentA], survivors[parentB], chromosomeLength);
+
+    }
+
+    return newGeneration;
+}
+
+int** createNewGenerationCX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
+{
+    int** newGeneration = new int* [newGenerationSize];
+
+    for (int i = 0; i < newGenerationSize; i++)
+    {
+        int parentA = std::rand() % survivorsAmount;
+        int parentB;
+
+        do
+        {
+            parentB = std::rand() % survivorsAmount;
+        } while (parentA == parentB);
+
+        newGeneration[i] = CX(survivors[parentA], survivors[parentB], chromosomeLength);
+
+    }
+
+    return newGeneration;
+}
+
+int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
+{
+    int** newGeneration = new int* [newGenerationSize];
+
+    for (int i = 0; i < newGenerationSize; i++)
+    {
+        int parentA = std::rand() % survivorsAmount;
+        int parentB;
+
+        do
+        {
+            parentB = std::rand() % survivorsAmount;
+        } while (parentA == parentB);
+
+        newGeneration[i] = PMX(survivors[parentA], survivors[parentB], chromosomeLength);
 
     }
 
