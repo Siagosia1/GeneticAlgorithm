@@ -18,8 +18,10 @@ int* orderCrossover(int* parentA, int* parentB, int parentLength);
 int** createNewGenerationOrderCrossover(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength);
 int** swapMutation(int** generation, int generationLength, int chromosomeLength);
 std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename);
-void inversionMutation(int* chromosome, int length);
-void scrambleMutation(int* chromosome, int length);
+
+int** inversionMutation(int** generation, int generationLength, int chromosomeLength, double mutationProbability);
+
+int** scrambleMutation(int** generation, int generationLength, int chromosomeLength, double mutationProbability);
 int* PMX(int* parentA, int* parentB, int length);
 int* CX(int* parentA, int* parentB, int length);
 
@@ -27,7 +29,6 @@ int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix);
 int geneticsAlgorithmPMXSWAP(std::vector<std::vector<int>> adjacencyMatrix);
 int geneticsAlgorithmCXSWAP(std::vector<std::vector<int>> adjacencyMatrix);
 
-int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix);
 int geneticsAlgorithmOCINV(std::vector<std::vector<int>> adjacencyMatrix);
 int geneticsAlgorithmOCSCR(std::vector<std::vector<int>> adjacencyMatrix);
 
@@ -139,6 +140,499 @@ int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix)
 
 }
 
+
+int geneticsAlgorithmPMXSWAP(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
+
+
+int geneticsAlgorithmCXSWAP(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
+
+
+
+int geneticsAlgorithmOCINV(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
+
+
+int geneticsAlgorithmOCSCR(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
+
+
+
+int geneticsAlgorithmPMXINV(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
+
+
+int geneticsAlgorithmCXSCR(std::vector<std::vector<int>> adjacencyMatrix)
+{
+
+    int cities = adjacencyMatrix.size();
+
+    std::cout << "Miast: "
+        << cities
+        << "\n";
+
+    std::srand(std::time(nullptr));
+
+    int** paths = generateRandomPaths(cities, 7);
+    int globalBest = std::numeric_limits<int>::max();
+
+    for (int i = 0; i < 1000; i++)
+    {
+        int best = totalDistance(adjacencyMatrix, paths[0], cities);
+
+        for (int j = 1; j < 7; j++)
+        {
+            best = std::min(
+                best,
+                totalDistance(adjacencyMatrix, paths[j], cities)
+            );
+        }
+
+        if (best < globalBest)
+        {
+            globalBest = best;
+        }
+
+        std::cout << "Generacja "
+            << i
+            << " najlepszy koszt = "
+            << best
+            << "\n";
+
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+
+        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities);
+
+        int** mutatedPaths = swapMutation(newGeneration, 7, cities);
+
+        for (int i = 0; i < 7; i++)
+        {
+            delete[] paths[i];
+        }
+        delete[] paths;
+
+
+        paths = mutatedPaths;
+
+
+        for (int i = 0; i < 3; i++)
+        {
+            delete[] survivors[i];
+        }
+        delete[] survivors;
+
+
+        for (int i = 0;i < 7;i++)
+        {
+            delete[] newGeneration[i];
+        }
+        delete[] newGeneration;
+    }
+
+    for (int i = 0; i < 7; i++)
+    {
+        delete[] paths[i];
+    }
+    delete[] paths;
+
+    std::cout << "Best cost = "
+        << globalBest
+        << "\n";
+
+    return globalBest, cities;
+
+}
 
 
 void saveDataToFile(std::vector<std::vector<std::string>> data)
@@ -550,7 +1044,7 @@ int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenera
 }
 
 //PRZETESTUJ
-int** swapMutation(int** generation, int generationLength, int chromosomeLength) 
+int** swapMutation(int** generation, int generationLength, int chromosomeLength, double mutationProbability) 
 {
     int** mutatedGeneration = new int* [generationLength];
     
@@ -564,7 +1058,7 @@ int** swapMutation(int** generation, int generationLength, int chromosomeLength)
             mutatedGeneration[i][j] = generation[i][j];
         }
 
-        if (std::rand() % 100 < 10)
+        if ((double)(std::rand() % 100) / 100 < mutationProbability)
         {
             int index1 = 1 + std::rand() % (chromosomeLength - 1);
             int index2 = 1 + std::rand() % (chromosomeLength - 1);
@@ -580,46 +1074,88 @@ int** swapMutation(int** generation, int generationLength, int chromosomeLength)
 }
 
 
-void scrambleMutation(int* chromosome, int length)
+int** scrambleMutation(
+    int** generation,
+    int generationLength,
+    int chromosomeLength,
+    double mutationProbability)
 {
-    int start = 1 + std::rand() % (length - 1);
-    int end = 1 + std::rand() % (length - 1);
-
-    if (start > end)
-    {
-        std::swap(start, end);
-    }
+    int** mutatedGeneration = new int* [generationLength];
 
     std::random_device rd;
     std::mt19937 gen(rd());
 
-    std::shuffle(
-        chromosome + start,
-        chromosome + end + 1,
-        gen
-    );
+    for (int i = 0; i < generationLength; i++)
+    {
+        mutatedGeneration[i] = new int[chromosomeLength];
+
+        for (int j = 0; j < chromosomeLength; j++)
+        {
+            mutatedGeneration[i][j] = generation[i][j];
+        }
+
+        if ((double)(std::rand() % 100) / 100 < mutationProbability)
+        {
+            int start = 1 + std::rand() % (chromosomeLength - 1);
+            int end = 1 + std::rand() % (chromosomeLength - 1);
+
+            if (start > end)
+            {
+                std::swap(start, end);
+            }
+
+            std::shuffle(
+                mutatedGeneration[i] + start,
+                mutatedGeneration[i] + end + 1,
+                gen
+            );
+        }
+    }
+
+    return mutatedGeneration;
 }
 
-void inversionMutation(int* chromosome, int length)
+int** inversionMutation(
+    int** generation,
+    int generationLength,
+    int chromosomeLength,
+    double mutationProbability)
 {
-    int start = 1 + std::rand() % (length - 1);
-    int end = 1 + std::rand() % (length - 1);
+    int** mutatedGeneration = new int* [generationLength];
 
-    if (start > end)
+    for (int i = 0; i < generationLength; i++)
     {
-        std::swap(start, end);
+        mutatedGeneration[i] = new int[chromosomeLength];
+
+        for (int j = 0; j < chromosomeLength; j++)
+        {
+            mutatedGeneration[i][j] = generation[i][j];
+        }
+
+        if ((double)(std::rand() % 100) / 100 < mutationProbability)
+        {
+            int start = 1 + std::rand() % (chromosomeLength - 1);
+            int end = 1 + std::rand() % (chromosomeLength - 1);
+
+            if (start > end)
+            {
+                std::swap(start, end);
+            }
+
+            while (start < end)
+            {
+                std::swap(
+                    mutatedGeneration[i][start],
+                    mutatedGeneration[i][end]
+                );
+
+                start++;
+                end--;
+            }
+        }
     }
 
-    while (start < end)
-    {
-        std::swap(
-            chromosome[start],
-            chromosome[end]
-        );
-
-        start++;
-        end--;
-    }
+    return mutatedGeneration;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
