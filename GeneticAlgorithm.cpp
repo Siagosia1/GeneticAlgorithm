@@ -48,20 +48,54 @@ bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::st
 int main()
 {
     auto begin = std::chrono::high_resolution_clock::now();
-
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
-
     auto res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
     // std::cout << res;
-
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-
-    
     writeResultsToFile("data.csv", "czas", "liczba miast", "best cost");
     writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("kroA100.xml");
+    res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
+
+
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("kroB150.xml");
+    res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
+
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("gr202.xml");
+    res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
+
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("gr666.xml");
+    res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
 
 
     return 0;
