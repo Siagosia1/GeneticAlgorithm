@@ -11,6 +11,8 @@
 #include <chrono>
 #include <stdio.h>
 
+
+
 //parametry geneticsalgorithms i swapmutation - tam beda bledy tam sprawdz, teraz sparametryzuj prawdopodobienstwo krzyzowania
 
 int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n);
@@ -41,7 +43,7 @@ int geneticsAlgorithmCXSCR(std::vector<std::vector<int>> adjacencyMatrix, double
 int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength, double crossoverProbability);
 int** createNewGenerationCX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength, double crossoverProbability);
 
-
+bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree);
 
 int main()
 {
@@ -51,10 +53,15 @@ int main()
 
     std::cout << geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
    
+
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+
+
+    writeResultsToFile("data.csv", "data1", "data2", "data3");
+
 
     return 0;
 }
@@ -1190,6 +1197,17 @@ int** inversionMutation(
     }
 
     return mutatedGeneration;
+}
+
+bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree)
+{
+    
+    std::ofstream file;
+    file.open(fileName, std::ios_base::app);
+    file << columnNameOne << "," << columnNameTwo << "," << columnNameThree << std::endl;
+    file.close();
+
+    return true;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
