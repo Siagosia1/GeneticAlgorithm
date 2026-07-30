@@ -51,16 +51,17 @@ int main()
 
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
 
-    std::cout << geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
-   
+    auto res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
+    // std::cout << res;
 
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
 
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
 
-
-    writeResultsToFile("data.csv", "data1", "data2", "data3");
+    
+    writeResultsToFile("data.csv", "czas", "liczba miast", "best cost");
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
 
 
     return 0;
@@ -145,7 +146,7 @@ int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix, doubl
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return  cities, globalBest;
 
 }
 
