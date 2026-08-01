@@ -98,6 +98,9 @@ int* CX
 int geneticsAlgorithm
 (
     std::vector<std::vector<int>> adjacencyMatrix, 
+    int populationSize,
+    int survivorCount,
+    int generations,
     double mutationProbability, 
     double crossoverProbability, 
     CrossoverType crossover,
@@ -133,9 +136,19 @@ bool writeResultsToFile
 
 int main()
 {
+    int populationSize = 100;
+    int survivorCount = 50;
+    int generations = 5000;
+
     auto begin = std::chrono::high_resolution_clock::now();
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
-    auto res = geneticsAlgorithm(adjacencyMatrix, 0.7, 0.7, CrossoverType::OX, MutationType::SWAP);
+    auto res = geneticsAlgorithm(adjacencyMatrix, 
+        populationSize,
+        survivorCount,
+        generations, 
+        0.7, 0.7, 
+        CrossoverType::OX, 
+        MutationType::SWAP);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
@@ -164,7 +177,13 @@ int main()
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("kroA100.xml");
-    res = geneticsAlgorithm(adjacencyMatrix, 0.7, 0.7, CrossoverType::OX, MutationType::SWAP);
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.7, 0.7,
+        CrossoverType::OX,
+        MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
@@ -172,7 +191,13 @@ int main()
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("kroB150.xml");
-    res = geneticsAlgorithm(adjacencyMatrix, 0.7, 0.7, CrossoverType::OX, MutationType::SWAP);
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.7, 0.7,
+        CrossoverType::OX,
+        MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
@@ -180,7 +205,13 @@ int main()
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("gr202.xml");
-    res = geneticsAlgorithm(adjacencyMatrix, 0.7, 0.7, CrossoverType::OX, MutationType::SWAP);
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.7, 0.7,
+        CrossoverType::OX,
+        MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
@@ -189,18 +220,32 @@ int main()
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("gr666.xml");
-    res = geneticsAlgorithm(adjacencyMatrix, 0.7, 0.7, CrossoverType::OX, MutationType::SWAP);
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.7, 0.7,
+        CrossoverType::OX,
+        MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
     writeResultsToFile("data.csv", std::to_string(elapsed.count()), "666", std::to_string(res));
+
 
     return 0;
 }
  
 
 
-int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double mutationProbability, double crossoverProbability, CrossoverType crossover, MutationType mutation)
+int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, 
+    int populationSize,
+    int survivorCount,
+    int generations, 
+    double mutationProbability,
+    double crossoverProbability, 
+    CrossoverType crossover, 
+    MutationType mutation)
 {
 
     int cities = adjacencyMatrix.size();
@@ -211,14 +256,14 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double muta
 
     std::srand(std::time(nullptr));
 
-    int** paths = generateRandomPaths(cities, 7);
+    int** paths = generateRandomPaths(cities, populationSize);
     int globalBest = std::numeric_limits<int>::max();
 
-    for (int i = 0; i < 1000; i++)
+    for (int i = 0; i < generations; i++)
     {
         int best = totalDistance(adjacencyMatrix, paths[0], cities);
 
-        for (int j = 1; j < 7; j++)
+        for (int j = 1; j < populationSize; j++)
         {
             best = std::min(
                 best,
@@ -237,7 +282,7 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double muta
             << best
             << "\n";
 
-        int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
+        int** survivors = chooseSurvivors(adjacencyMatrix, paths, populationSize, cities);
 
         int** newGeneration = nullptr;
 
@@ -246,21 +291,21 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double muta
         case CrossoverType::OX:
             newGeneration =
                 createNewGenerationOrderCrossover(
-                    survivors, 3, 7, cities,
+                    survivors, survivorCount, populationSize, cities,
                     crossoverProbability);
             break;
 
         case CrossoverType::PMX:
             newGeneration =
                 createNewGenerationPMX(
-                    survivors, 3, 7, cities,
+                    survivors, survivorCount, populationSize, cities,
                     crossoverProbability);
             break;
 
         case CrossoverType::CX:
             newGeneration =
                 createNewGenerationCX(
-                    survivors, 3, 7, cities,
+                    survivors, survivorCount, populationSize, cities,
                     crossoverProbability);
             break;
         }
@@ -272,26 +317,26 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double muta
         case MutationType::SWAP:
             mutatedPaths =
                 swapMutation(
-                    newGeneration, 7, cities,
+                    newGeneration, populationSize, cities,
                     mutationProbability);
             break;
 
         case MutationType::INVERSION:
             mutatedPaths =
                 inversionMutation(
-                    newGeneration, 7, cities,
+                    newGeneration, populationSize, cities,
                     mutationProbability);
             break;
 
         case MutationType::SCRAMBLE:
             mutatedPaths =
                 scrambleMutation(
-                    newGeneration, 7, cities,
+                    newGeneration, populationSize, cities,
                     mutationProbability);
             break;
         }
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < populationSize; i++)
         {
             delete[] paths[i];
         }
@@ -301,21 +346,21 @@ int geneticsAlgorithm(std::vector<std::vector<int>> adjacencyMatrix, double muta
         paths = mutatedPaths;
 
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < survivorCount; i++)
         {
             delete[] survivors[i];
         }
         delete[] survivors;
 
 
-        for (int i = 0;i < 7;i++)
+        for (int i = 0;i < populationSize;i++)
         {
             delete[] newGeneration[i];
         }
         delete[] newGeneration;
     }
 
-    for (int i = 0; i < 7; i++)
+    for (int i = 0; i < populationSize; i++)
     {
         delete[] paths[i];
     }
