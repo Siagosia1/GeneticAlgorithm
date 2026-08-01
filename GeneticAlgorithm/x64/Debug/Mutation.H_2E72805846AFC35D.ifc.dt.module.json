@@ -1,0 +1,22 @@
+{
+    "version": 1,
+    "revision": 0,
+    "rules": [
+        {
+            "primary-output": "GeneticAlgorithm\\x64\\Debug\\Mutation.obj",
+            "outputs": [
+                "GeneticAlgorithm\\x64\\Debug\\Mutation.H_2E72805846AFC35D.ifc.dt.module.json",
+                "GeneticAlgorithm\\x64\\Debug\\Mutation.H_2E72805846AFC35D.ifc.dt.d.json",
+                "GeneticAlgorithm\\x64\\Debug\\Mutation.H.ifc"
+            ],
+            "provides": [
+                {
+                    "logical-name": "C:\\Users\\Małgorzata\\source\\repos\\Siagosia1\\GeneticAlgorithm\\Mutation.H",
+                    "source-path": "c:\\users\\małgorzata\\source\\repos\\siagosia1\\geneticalgorithm\\mutation.h",
+                    "lookup-method": "absolute"
+                }
+            ],
+            "requires": []
+        }
+    ]
+}
