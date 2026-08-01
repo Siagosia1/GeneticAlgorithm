@@ -131,7 +131,9 @@ bool writeResultsToFile
     std::string fileName, 
     std::string columnNameOne, 
     std::string columnNameTwo, 
-    std::string columnNameThree
+    std::string columnNameThree,
+    std::string columnNameFour
+
 );
 
 int main()
@@ -140,22 +142,58 @@ int main()
     int survivorCount = 50;
     int generations = 5000;
 
+    //OX dla 3 roznych macierzy i roznych wielkosci populacji-------------------------------
     auto begin = std::chrono::high_resolution_clock::now();
-    auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
+    auto adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
     auto res = geneticsAlgorithm(adjacencyMatrix, 
         populationSize,
         survivorCount,
         generations, 
-        0.7, 0.7, 
+        0.15,
+        0.85, 
         CrossoverType::OX, 
         MutationType::SWAP);
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", "czas", "liczba miast", "best cost");
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+    writeResultsToFile("data.csv", "czas", "liczba miast", "best cost", "Rozmiar populacji");
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
-   // auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::OX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::OX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+
+    //auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
 
     //int counter1 = 0;
     //int counter2 = 0;
@@ -175,63 +213,423 @@ int main()
 
     //std::cout << "counter1: " << counter1 << " " << "counter2: " << counter2;
 
+    populationSize = 100; 
+
     begin = std::chrono::high_resolution_clock::now();
-    adjacencyMatrix = readAdjacencyMatrix("kroA100.xml");
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
     res = geneticsAlgorithm(adjacencyMatrix,
         populationSize,
         survivorCount,
         generations,
-        0.7, 0.7,
+        0.15,
+        0.85,
         CrossoverType::OX,
         MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "100", std::to_string(res));
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+
+    populationSize = 200;
 
     begin = std::chrono::high_resolution_clock::now();
-    adjacencyMatrix = readAdjacencyMatrix("kroB150.xml");
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
     res = geneticsAlgorithm(adjacencyMatrix,
         populationSize,
         survivorCount,
         generations,
-        0.7, 0.7,
+        0.15,
+        0.85,
         CrossoverType::OX,
         MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "150", std::to_string(res));
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+
+
+    populationSize = 300;
 
     begin = std::chrono::high_resolution_clock::now();
-    adjacencyMatrix = readAdjacencyMatrix("gr202.xml");
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
     res = geneticsAlgorithm(adjacencyMatrix,
         populationSize,
         survivorCount,
         generations,
-        0.7, 0.7,
+        0.15,
+        0.85,
         CrossoverType::OX,
         MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "202", std::to_string(res));
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
+    populationSize = 100;
 
     begin = std::chrono::high_resolution_clock::now();
-    adjacencyMatrix = readAdjacencyMatrix("gr666.xml");
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
     res = geneticsAlgorithm(adjacencyMatrix,
         populationSize,
         survivorCount,
         generations,
-        0.7, 0.7,
+        0.15,
+        0.85,
         CrossoverType::OX,
         MutationType::SWAP);
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "666", std::to_string(res));
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::OX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::OX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+
+
+    //PMX dla 3 roznych macierzy i 3 roznych wielkosci populacji-------------------------------
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+
+
+    populationSize = 100;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+
+    populationSize = 100;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::PMX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+
+
+    //CX dla 3 roznych macierzy i 3 roznych wielkosci populacji-------------------------------
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv47.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+
+
+    populationSize = 100;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("ftv170.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+
+    populationSize = 100;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+
+
+    populationSize = 200;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+
+    populationSize = 300;
+
+    begin = std::chrono::high_resolution_clock::now();
+    adjacencyMatrix = readAdjacencyMatrix("rbg403.xml");
+    res = geneticsAlgorithm(adjacencyMatrix,
+        populationSize,
+        survivorCount,
+        generations,
+        0.15,
+        0.85,
+        CrossoverType::CX,
+        MutationType::SWAP);
+    end = std::chrono::high_resolution_clock::now();
+    elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     return 0;
 }
@@ -696,7 +1094,7 @@ int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenera
 //PRZETESTUJ
 
 
-bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree)
+bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree, std::string columnNameFour)
 {
     
     std::ofstream file;
