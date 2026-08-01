@@ -12,7 +12,6 @@
 #include <stdio.h>
 
 
-
 //parametry geneticsalgorithms i swapmutation - tam beda bledy tam sprawdz, teraz sparametryzuj prawdopodobienstwo krzyzowania
 
 int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n);
@@ -50,12 +49,31 @@ int main()
     auto begin = std::chrono::high_resolution_clock::now();
     auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
     auto res = geneticsAlgorithmOCSWAP(adjacencyMatrix, 0.7, 0.7);
-    // std::cout << res;
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
     writeResultsToFile("data.csv", "czas", "liczba miast", "best cost");
     writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
+
+   // auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
+
+    //int counter1 = 0;
+    //int counter2 = 0;
+
+    //for (int i = 0; i < adjacencyMatrix.size(); i++)
+    //{
+    //    for (int j = 0; j < adjacencyMatrix[i].size(); j++)
+    //    {
+    //        std::cout << adjacencyMatrix[i][j] << " ";
+    //        counter2 ++;
+    //    }
+
+    //    std::cout << "\n";
+    //    counter1 ++;
+
+    //}
+
+    //std::cout << "counter1: " << counter1 << " " << "counter2: " << counter2;
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("kroA100.xml");
@@ -63,10 +81,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
-
-
-
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "100", std::to_string(res));
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("kroB150.xml");
@@ -74,9 +89,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
-
-
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "150", std::to_string(res));
 
     begin = std::chrono::high_resolution_clock::now();
     adjacencyMatrix = readAdjacencyMatrix("gr202.xml");
@@ -84,8 +97,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
-
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "202", std::to_string(res));
 
 
     begin = std::chrono::high_resolution_clock::now();
@@ -94,9 +106,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "44", std::to_string(res));
-
-
+    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "666", std::to_string(res));
 
     return 0;
 }
@@ -180,7 +190,7 @@ int geneticsAlgorithmOCSWAP(std::vector<std::vector<int>> adjacencyMatrix, doubl
         << globalBest
         << "\n";
 
-    return  cities, globalBest;
+    return  globalBest;
 
 }
 
@@ -224,7 +234,7 @@ int geneticsAlgorithmPMXSWAP(std::vector<std::vector<int>> adjacencyMatrix, doub
 
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
-        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
+        int** newGeneration = createNewGenerationPMX(survivors, 3, 7, cities, crossoverProbability);
 
         int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
 
@@ -262,7 +272,7 @@ int geneticsAlgorithmPMXSWAP(std::vector<std::vector<int>> adjacencyMatrix, doub
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -306,7 +316,7 @@ int geneticsAlgorithmCXSWAP(std::vector<std::vector<int>> adjacencyMatrix, doubl
 
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
-        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
+        int** newGeneration = createNewGenerationCX(survivors, 3, 7, cities, crossoverProbability);
 
         int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
 
@@ -344,7 +354,7 @@ int geneticsAlgorithmCXSWAP(std::vector<std::vector<int>> adjacencyMatrix, doubl
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -391,7 +401,7 @@ int geneticsAlgorithmOCINV(std::vector<std::vector<int>> adjacencyMatrix, double
 
         int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
 
-        int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
+        int** mutatedPaths = inversionMutation(newGeneration, 7, cities, mutationProbability);
 
         for (int i = 0; i < 7; i++)
         {
@@ -427,7 +437,7 @@ int geneticsAlgorithmOCINV(std::vector<std::vector<int>> adjacencyMatrix, double
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -473,7 +483,7 @@ int geneticsAlgorithmOCSCR(std::vector<std::vector<int>> adjacencyMatrix, double
 
         int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
 
-        int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
+        int** mutatedPaths = scrambleMutation(newGeneration, 7, cities, mutationProbability);
 
         for (int i = 0; i < 7; i++)
         {
@@ -509,7 +519,7 @@ int geneticsAlgorithmOCSCR(std::vector<std::vector<int>> adjacencyMatrix, double
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -554,9 +564,9 @@ int geneticsAlgorithmPMXINV(std::vector<std::vector<int>> adjacencyMatrix, doubl
 
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
-        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
+        int** newGeneration = createNewGenerationPMX(survivors, 3, 7, cities, crossoverProbability);
 
-        int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
+        int** mutatedPaths = inversionMutation(newGeneration, 7, cities, mutationProbability);
 
         for (int i = 0; i < 7; i++)
         {
@@ -592,7 +602,7 @@ int geneticsAlgorithmPMXINV(std::vector<std::vector<int>> adjacencyMatrix, doubl
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -636,9 +646,9 @@ int geneticsAlgorithmCXSCR(std::vector<std::vector<int>> adjacencyMatrix, double
 
         int** survivors = chooseSurvivors(adjacencyMatrix, paths, 7, cities);
 
-        int** newGeneration = createNewGenerationOrderCrossover(survivors, 3, 7, cities, crossoverProbability);
+        int** newGeneration = createNewGenerationCX(survivors, 3, 7, cities, crossoverProbability);
 
-        int** mutatedPaths = swapMutation(newGeneration, 7, cities, mutationProbability);
+        int** mutatedPaths = scrambleMutation(newGeneration, 7, cities, mutationProbability);
 
         for (int i = 0; i < 7; i++)
         {
@@ -674,7 +684,7 @@ int geneticsAlgorithmCXSCR(std::vector<std::vector<int>> adjacencyMatrix, double
         << globalBest
         << "\n";
 
-    return globalBest, cities;
+    return globalBest;
 
 }
 
@@ -700,6 +710,45 @@ void saveDataToFile(std::vector<std::vector<std::string>> data)
 
 }
 
+//
+//std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename)
+//{
+//    std::ifstream file(filename);
+//    if (!file.is_open())
+//    {
+//        std::cout << "File can't be open!\n";
+//        return {};
+//    }
+//
+//    std::vector<std::vector<int>> adjacencyMatrix;
+//    std::vector<int> row;
+//
+//    std::string line;
+//
+//    while (std::getline(file, line))
+//    {
+//        size_t pos = line.find("cost=\"");
+//
+//        if (pos != std::string::npos)
+//        {
+//            pos += 6;
+//
+//            size_t end = line.find("\"", pos);
+//
+//            double cost = std::stod(line.substr(pos, end - pos));
+//
+//            row.push_back((int)cost);
+//        }
+//
+//        if (line.find("</vertex>") != std::string::npos)
+//        {
+//            adjacencyMatrix.push_back(row);
+//            row.clear();
+//        }
+//    }
+//
+//    return adjacencyMatrix;
+//}
 
 std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename)
 {
@@ -710,9 +759,8 @@ std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename)
         return {};
     }
 
-    std::vector<std::vector<int>> adjacencyMatrix;
+    std::vector<std::vector<int>> rows;
     std::vector<int> row;
-
     std::string line;
 
     while (std::getline(file, line))
@@ -722,25 +770,42 @@ std::vector<std::vector<int>> readAdjacencyMatrix(std::string filename)
         if (pos != std::string::npos)
         {
             pos += 6;
-
             size_t end = line.find("\"", pos);
 
             double cost = std::stod(line.substr(pos, end - pos));
-
             row.push_back((int)cost);
         }
 
         if (line.find("</vertex>") != std::string::npos)
         {
-            adjacencyMatrix.push_back(row);
+            rows.push_back(row);
             row.clear();
         }
     }
 
-    return adjacencyMatrix;
+    int n = rows.size();
+
+    std::vector<std::vector<int>> matrix(n, std::vector<int>(n));
+
+    for (int i = 0; i < n; i++)
+    {
+        int k = 0;
+
+        for (int j = 0; j < n; j++)
+        {
+            if (i == j)
+            {
+                matrix[i][j] = 0;
+            }
+            else
+            {
+                matrix[i][j] = rows[i][k++];
+            }
+        }
+    }
+
+    return matrix;
 }
-
-
 
 int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path[], int n) {
     
@@ -748,6 +813,7 @@ int totalDistance(const std::vector<std::vector<int>>& adjacencyMatrix, int path
 
     for (int i = 0; i < n-1; i++)
     {
+
         sum += adjacencyMatrix[path[i]][path[i + 1]];
     }
 
@@ -917,7 +983,7 @@ int* CX(int* parentA,
 
     child[0] = 0;
 
-    int index = 1;
+    int index = 0;
 
     while (!visited[index])
     {
@@ -1077,7 +1143,7 @@ int** createNewGenerationCX(int** survivors, int survivorsAmount, int newGenerat
 
         if ((double)std::rand() / RAND_MAX < crossoverProbability)
         {
-            newGeneration[i] = orderCrossover(
+            newGeneration[i] = CX(
                 survivors[parentA],
                 survivors[parentB],
                 chromosomeLength);
@@ -1098,7 +1164,7 @@ int** createNewGenerationCX(int** survivors, int survivorsAmount, int newGenerat
     return newGeneration;
 }
 
-int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength)
+int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenerationSize, int chromosomeLength, double crossoverProbability)
 {
     int** newGeneration = new int* [newGenerationSize];
 
