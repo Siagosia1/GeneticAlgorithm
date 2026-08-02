@@ -129,6 +129,8 @@ int** createNewGenerationCX
 bool writeResultsToFile
 (
     std::string fileName, 
+    std::string crossoverType,
+    std::string mutationType,
     std::string columnNameOne, 
     std::string columnNameTwo, 
     std::string columnNameThree,
@@ -156,8 +158,8 @@ int main()
     auto end = std::chrono::high_resolution_clock::now();
     auto elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", "czas", "liczba miast", "best cost", "Rozmiar populacji");
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "rodzaj krzyzowania", "rodzaj mutacji", "czas", "liczba miast", "best cost", "Rozmiar populacji");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -174,7 +176,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -191,7 +193,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
     //auto adjacencyMatrix = readAdjacencyMatrix("ftv44.xml");
 
@@ -228,7 +230,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -245,7 +247,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -263,7 +265,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -280,7 +282,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -298,7 +300,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -315,7 +317,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "OX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
 
     //PMX dla 3 roznych macierzy i 3 roznych wielkosci populacji-------------------------------
@@ -333,7 +335,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -350,7 +352,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -367,7 +369,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -385,7 +387,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -402,7 +404,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -420,7 +422,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -437,7 +439,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -455,7 +457,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -472,7 +474,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
 
     //CX dla 3 roznych macierzy i 3 roznych wielkosci populacji-------------------------------
@@ -490,7 +492,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -507,7 +509,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -524,7 +526,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -542,7 +544,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -559,7 +561,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -577,7 +579,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -594,7 +596,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -612,7 +614,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -629,7 +631,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //SWAP dla 3 roznych macierzy i 3 roznych wielkosci populacji
 
@@ -648,7 +650,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -665,7 +667,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -682,7 +684,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -700,7 +702,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -717,7 +719,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -735,7 +737,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -752,7 +754,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -770,7 +772,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -787,7 +789,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SWAP", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
     
     //INVERSION dla 3 roznych macierzy i 3 roznych wielkosci populacji
 
@@ -806,7 +808,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -823,7 +825,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -840,7 +842,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -858,7 +860,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -875,7 +877,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -893,7 +895,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -910,7 +912,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -928,7 +930,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -945,7 +947,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //SCRAMBLE dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -963,7 +965,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -980,7 +982,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -997,7 +999,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1015,7 +1017,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1032,7 +1034,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1050,7 +1052,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1067,7 +1069,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1085,7 +1087,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1102,7 +1104,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCARMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //PMX INVERSION dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1120,7 +1122,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1137,7 +1139,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1154,7 +1156,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1172,7 +1174,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1189,7 +1191,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1207,7 +1209,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1224,7 +1226,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1242,7 +1244,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1259,7 +1261,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "PMX", "INVERSION", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo krzyzowania dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1277,7 +1279,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1294,7 +1296,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1311,7 +1313,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1329,7 +1331,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1346,7 +1348,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1364,7 +1366,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1381,7 +1383,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1399,7 +1401,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1416,7 +1418,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo krzyzowania dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1434,7 +1436,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1451,7 +1453,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1468,7 +1470,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1486,7 +1488,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1503,7 +1505,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1521,7 +1523,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1538,7 +1540,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1556,7 +1558,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1573,7 +1575,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo krzyzowania dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1591,7 +1593,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1608,7 +1610,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1625,7 +1627,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1643,7 +1645,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1660,7 +1662,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1678,7 +1680,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1695,7 +1697,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1713,7 +1715,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1730,7 +1732,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo mutacji dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1748,7 +1750,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1765,7 +1767,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1782,7 +1784,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1800,7 +1802,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1817,7 +1819,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1835,7 +1837,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -1852,7 +1854,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -1870,7 +1872,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1887,7 +1889,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo mutacji dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -1905,7 +1907,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1922,7 +1924,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -1939,7 +1941,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -1957,7 +1959,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -1974,7 +1976,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -1992,7 +1994,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -2009,7 +2011,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -2027,7 +2029,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -2044,7 +2046,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     //rozne prawdopodobienstwo mutacji dla 3 roznych macierzy i 3 roznych wielkosci populacji
     populationSize = 100;
@@ -2062,7 +2064,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -2079,7 +2081,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -2096,7 +2098,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "47", std::to_string(res), "300");
 
 
     populationSize = 100;
@@ -2114,7 +2116,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "100");
 
     populationSize = 200;
 
@@ -2131,7 +2133,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "200");
 
 
     populationSize = 300;
@@ -2149,7 +2151,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "170", std::to_string(res), "300");
 
     populationSize = 100;
 
@@ -2166,7 +2168,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "100");
 
 
     populationSize = 200;
@@ -2184,7 +2186,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "200");
 
     populationSize = 300;
 
@@ -2201,7 +2203,7 @@ int main()
     end = std::chrono::high_resolution_clock::now();
     elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     printf("Time measured: %.3f seconds.\n", elapsed.count() * 1e-9);
-    writeResultsToFile("data.csv", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
+    writeResultsToFile("data.csv", "CX", "SCRAMBLE", std::to_string(elapsed.count()), "403", std::to_string(res), "300");
 
     return 0;
 }
@@ -2666,7 +2668,7 @@ int** createNewGenerationPMX(int** survivors, int survivorsAmount, int newGenera
 //PRZETESTUJ
 
 
-bool writeResultsToFile(std::string fileName, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree, std::string columnNameFour)
+bool writeResultsToFile(std::string fileName, std::string crossoverType, std::string mutationType, std::string columnNameOne, std::string columnNameTwo, std::string columnNameThree, std::string columnNameFour)
 {
     
     std::ofstream file;
